@@ -1,0 +1,14 @@
+sudo: required 
+
+# tell travis CI that we need a copy of docker running 
+services: 
+  - docker
+
+# tell travis CI to build our image using Dockerfile.dev
+before_install: 
+  - docker build -t koolshib/docker-react -f Dockerfile.dev .
+
+# tell travis to run the tests.
+# setting CI=true (passing to environment e) causes npm run test to execute the entire test suite once and exit, making it suitable for CI environments
+script: 
+  - docker run -e CI=true koolshib/docker-react npm run test 
