@@ -12,3 +12,22 @@ before_install:
 # setting CI=true (passing to environment e) causes npm run test to execute the entire test suite once and exit, making it suitable for CI environments
 script: 
   - docker run -e CI=true koolshib/docker-react npm run test 
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "docker-react"
+  env: "Dockerreact-env"
+  # name of the s3 bucket
+  bucket_name: "elasticbeanstalk-us-east-2-048329895730"
+  # by default it will be the app name 
+  bucket_path: "docker-react"
+  on:
+  # deploy triggered only if change to master is seen 
+    branch: master
+
+  # access_key_id, secret_access_key refer to environment variables defined in travis config. this keeps the access key values encrypted 
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: "$AWS_SECRET_KEY"
+
+
